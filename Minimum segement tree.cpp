@@ -19,7 +19,6 @@ void buildtree(int *tree,int *a,int index,int s,int e)
     int mid=(s+e)/2;
     buildtree(tree,a,2*index,s,mid);
     buildtree(tree,a,2*index+1,mid+1,e);
-
     tree[index]=min(tree[2*index],tree[2*index+1]);
 }
 int query(int *tree,int index,int s,int e,int qs,int qe)
@@ -69,7 +68,10 @@ void rangeupdate(int *tree,int index,int s,int e,int rs,int re,int inc)
         return;
     //complete overlap
     if(s==e)
+    {
         tree[index]+=inc;
+        return ;
+    }
 
     int mid=(s+e)/2;
     rangeupdate(tree,2*index,s,mid,rs,re,inc);
