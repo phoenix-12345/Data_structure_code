@@ -49,17 +49,34 @@ void update(int *tree,int index,int s,int e,int ind,int value)
     //complete overlap
     if(s==e)
     {
-        tree[index]=val;
+        tree[index]=value;
         return;
     }
     //partial overlaop - ind exist in node range
     int mid=(s+e)/2;
-    update(tree,2*index,s,mid,ind,val);
-    update(tree,2*index+1,mid+1,e,ind,val);
+    update(tree,2*index,s,mid,ind,value);
+    update(tree,2*index+1,mid+1,e,ind,value);
 
     tree[index]=min(tree[2*index],tree[2*index+1]);
     return;
 
+}
+//range update function
+void rangeupdate(int *tree,int index,int s,int e,int rs,int re,int inc)
+{
+    //no overlap
+    if(re<s||rs>e)
+        return;
+    //complete overlap
+    if(s==e)
+        tree[index]+=inc;
+
+    int mid=(s+e)/2;
+    rangeupdate(tree,2*index,s,mid,rs,re,inc);
+    rangeupdate(tree,2*index+1,mid+1,e,rs,re,inc);
+
+    tree[index]=min(tree[2*index],tree[2*index+1]);
+    return;
 }
 int main()
 {
@@ -72,10 +89,17 @@ int main()
     //build tree
     buildtree(tree,a,index,s,e);
 
-    //update element of given array and then make changes in tree
+    //update particular element of given array and then make changes in tree
     int ind,val;
     cin>>ind>>val;
-    update(tree,index,s,e,ind,val)
+    update(tree,index,s,e,ind,val);
+
+    //update a particular range of elements
+    int rs,re,inc;
+    cin>>rs>>re>>inc;
+    rangeupdate(tree,index,s,e,rs,rs,inc);
+
+
     int q;
     cin>>q;
     while(q--)
